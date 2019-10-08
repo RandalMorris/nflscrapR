@@ -35,7 +35,7 @@
 #' # Roster for Steelers in 2018
 #' get_season_rosters(2018, teams = "PIT") 
 #' @export
-get_season_rosters <- function(season, teams, type = "reg",
+get_season_rosters <- function(season, type = "reg",
                                positions = c("QUARTERBACK", "RUNNING_BACK", "WIDE_RECEIVER", 
                                              "TIGHT_END")) {
   
@@ -50,7 +50,6 @@ get_season_rosters <- function(season, teams, type = "reg",
     purrr::map_df(function(position) {
       get_players(position, season, type) 
       }) %>%
-    dplyr::filter(Team %in% teams) %>% 
     dplyr::group_by(Player, Team, Pos, GSIS_ID) %>% 
     dplyr::slice(n= 1) %>% 
     dplyr::mutate(Season = season,
@@ -59,7 +58,7 @@ get_season_rosters <- function(season, teams, type = "reg",
     dplyr::rename(season = Season,
                   full_player_name = Player,
                   abbr_player_name = name,
-                  team = Team,
+                  Team = Team,
                   position = Pos,
                   gsis_id = GSIS_ID) %>%
     return()
